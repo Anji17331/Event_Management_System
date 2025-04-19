@@ -1,26 +1,41 @@
-FROM php:fpm-alpine
+FROM php:8.2-fpm
 
-COPY --from=composer /usr/bin/composer /usr/bin/composer
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    libzip-dev \
+    unzip \
+    git \
+    curl \
+    ssmtp \
+    build-essential \
+    autoconf \
+    pkg-config \
+    re2c \
+    && rm -rf /var/lib/apt/lists/*
 
-RUN apk add --no-cache $PHPIZE_DEPS
-RUN apk add --no-cache linux-headers
-RUN pecl install xdebug 
+# Install PHP extensions
+RUN docker-php-ext-install mysqli pdo pdo_mysql zip \
+    && docker-php-ext-enable mysqli
 
-RUN docker-php-ext-enable xdebug 
-RUN docker-php-ext-install pdo pdo_mysql
+# Install and enable Xdebug
+RUN pecl install xdebug \
+    && docker-php-ext-enable xdebug
 
-# Configure maildev
+# Configure SSMTP for Maildev
+RUN echo "root=mailer@v.je" > /etc/ssmtp/ssmtp.conf \
+    && echo "mailhub=maildev:1025" >> /etc/ssmtp/ssmtp.conf \
+    && echo "hostname=localhost" >> /etc/ssmtp/ssmtp.conf \
+    && echo "FromLineOverride=YES" >> /etc/ssmtp/ssmtp.conf
 
-RUN apk update
-RUN apk add ssmtp
+# PHP configuration overrides
+RUN echo "post_max_size=5000M" > /usr/local/etc/php/conf.d/php-uploadsize.ini \
+    && echo "upload_max_filesize=5000M" >> /usr/local/etc/php/conf.d/php-uploadsize.ini \
+    && echo "short_open_tag=Off" > /usr/local/etc/php/conf.d/opentags.ini
 
-RUN echo "hostname=v.je" > /etc/ssmtp/ssmtp.conf
-RUN echo "root=mailer@v.je>" >> /etc/ssmtp/ssmtp.conf
-RUN echo "mailhub=maildev:1025" >> /etc/ssmtp/ssmtp.conf
+# Set working directory
+WORKDIR /websites
 
-RUN echo "sendmail_path=sendmail -i -t" >> /usr/local/etc/php/conf.d/php-sendmail.ini
-RUN sed -i '/#!\/bin\/sh/aecho "$(hostname -i)\t$(hostname) $(hostname).localhost" >> /etc/hosts' /usr/local/bin/docker-php-entrypoint
+# Expose the FPM port (not needed for Docker DNS, but for clarity)
+EXPOSE 9000
 
-RUN echo "post_max_size=5000M" > /usr/local/etc/php/conf.d/php-uploadsize.ini
-RUN echo "upload_max_filesize=5000M" >> /usr/local/etc/php/conf.d/php-uploadsize.ini
-RUN echo "short_open_tag=off" >> /usr/local/etc/php/conf.d/opentags.ini
+CMD ["php-fpm"]

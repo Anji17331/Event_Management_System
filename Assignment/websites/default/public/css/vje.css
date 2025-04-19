@@ -11,6 +11,15 @@ body {
 }
 
 /* Header_Bar_Styles */
+
+/* Sticky Header */
+.sticky_header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background-color: white;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
 header {
   background-color: #625f63;
   padding: 25px 20px;
@@ -350,14 +359,15 @@ footer {
 .left,
 .right {
   flex: 1;
+    display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .left {
   background: url("pexels-wendywei-1190298.jpg") center/cover no-repeat;
   color: white;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+
   text-align: center;
   position: relative;
   padding: 1rem;
@@ -390,9 +400,9 @@ footer {
   padding: 3rem;
   margin: 2rem;
   background: white;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  /* border: 1px solid #ccc; */
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
 }
 
 .buttons {
@@ -440,10 +450,25 @@ form {
 }
 
 input {
-  padding: 0.7rem;
+  padding: 0.8rem 1rem;
   border: 1px solid #ccc;
-  border-radius: 6px;
+  border-radius: 8px;
+  font-size: 1rem;
 }
+
+/* Input feedback */
+.input_feedback{
+  font-size: 0.9em;
+  margin-top: 4px;
+  display: block;
+}
+.input_feedback.valid{
+  color: green;
+}
+.input_feedback.invalid{
+  color: red;
+}
+
 
 .forgot_password {
   text-align: right;

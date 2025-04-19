@@ -1,3 +1,11 @@
+<?php
+session_start();
+if (!isset($_SESSION['username'])) {
+    header('Location: Auth/login.php');
+    exit();
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -10,7 +18,7 @@
 
 <body>
     <?php
-    include 'includes/header.php';
+    include '../includes/header.php';
     ?>
 
     <main>
@@ -138,7 +146,7 @@
     </main>
 
     <?php
-    include 'includes/footer.php'; 
+    include '../includes/footer.php';
     ?>
 </body>
 
