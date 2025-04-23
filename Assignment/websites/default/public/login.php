@@ -11,13 +11,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $username = trim($_POST['username']);
     $password = trim($_POST['password']);
 
-    $stmt = $conn->prepare("SELECT * FROM users WHERE username = ?");
-    $stmt->bind_param("s", $username);
-    $stmt->execute();
-    $result = $stmt->get_result();
+    // Prepare and execute the PDO statement
+    $stmt = $pdo->prepare("SELECT * FROM users WHERE username = ?");
+    $stmt->execute([$username]);
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    if ($result->num_rows > 0) {
-        $user = $result->fetch_assoc();
+    if ($result) {
+        $user = $result;
+
 
         // Verify password
         if (password_verify($password, $user['password'])) {
@@ -26,13 +27,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_SESSION['role'] = $user['role'];
 
             // Redirect based on role
-            if ($user['role'] === 'admin') {
-                header("Location: ../admin_dashboard.php");
-            } elseif ($user['role'] === 'user') {
-                header("Location: ../user_home.php");
-            } else {
-                header("Location: ../index.php"); // fallback
-            }
+           switch ($user['role']) {
+                case 'admin':
+                    header('Location: ../admin/dashboard.php"');
+                    break;
+                case 'user':
+                    header('Location: ../index.php');
+                    break;
+                default:
+                header('Location: ../index.php');
+                }
             exit();
         } else {
             $error = 'Invalid password';  // Store error message
@@ -40,8 +44,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     } else {
         $error = 'Invalid username';  // Store error message
     }
-
-    $stmt->close();
 }
 
 ?>
@@ -51,7 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <head>
     <meta charset="UTF-8">
     <title>Login</title>
-    <link rel="stylesheet" href="../vje.css">
+    <link rel="stylesheet" href="css/vje.css">
 </head>
 
 <body>
@@ -72,11 +74,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <p>Enter your Details to login</p>
 
                 <!-- Display the error message here -->
-                <?php if (!empty($error)): ?>
-                    <div class="error" style="color:red; margin-bottom: 10px;">
-                        <?php echo htmlspecialchars($error); ?>
-                    </div>
-                <?php endif; ?>
+
 
                 <form action="" method="POST">
                     <input type="text" placeholder="username" name="username" required>
@@ -99,14 +97,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <p>Don't have an account? <a href="registration.php">Register</a></p>
                 </div>
 
-                <div class="social_login">
+                <!-- <div class="social_login">
                     <p>Or</p>
                     <p>Signup with</p>
                     <div class="social_buttons">
                         <button><img src="" alt="Google"></button>
                         <button><img src="" alt="Facebook"></button>
                         <button><img src="" alt="Twitter"></button>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>

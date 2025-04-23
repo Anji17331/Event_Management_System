@@ -14,14 +14,14 @@ require_once '../Includes/session.php';
 
         <!-- Action Icons -->
         <div class="user_actions">
-            <a href="/wishlist.php" title="Wishlist">
+            <!-- <a href="/wishlist.php" title="Wishlist">
                 <img src="/Icons/favorite_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.svg" alt="Wishlist">
-            </a>
-            <a href="/cart.php" title="Cart">
+            </a> -->
+            <!-- <a href="/cart.php" title="Cart">
                 <img src="/Icons/shopping_cart_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.svg" alt="Cart">
-            </a>
+            </a> -->
             <a href="/user_profile.php" title="Account">
-                <img src="/Icons/account_circle_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.svg" alt="Profile">
+                <img src="../Icons/account_circle_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.svg"alt="Profile">
             </a>
 
             <?php if (isLoggedIn()): ?>

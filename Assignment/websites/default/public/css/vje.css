@@ -359,15 +359,15 @@ footer {
 .left,
 .right {
   flex: 1;
-    display: flex;
+  display: flex;
   justify-content: center;
   align-items: center;
 }
 
 .left {
-  background: url("pexels-wendywei-1190298.jpg") center/cover no-repeat;
-  color: white;
+  background: url("../pexels-wendywei-1190298.jpg") no-repeat center/cover;
 
+  color: white;
   text-align: center;
   position: relative;
   padding: 1rem;

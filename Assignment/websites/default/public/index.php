@@ -1,9 +1,13 @@
 <?php
-session_start();
-if (!isset($_SESSION['username'])) {
-    header('Location: Auth/login.php');
-    exit();
-}
+    // 1) Pull in our secure session helpers…
+    require_once(__DIR__ . '/../Includes/session.php');
+
+
+    // // 2) …and force login if needed
+    //      requireAuth();
+
+    // 3) Then bring in the header (which itself includes session.php)
+    require_once __DIR__ . '/../Includes/header.php';
 ?>
 
 <!DOCTYPE html>
@@ -13,13 +17,11 @@ if (!isset($_SESSION['username'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="vje.css">
+    <link rel="stylesheet" href="css/vje.css">
 </head>
 
 <body>
-    <?php
-    include '../includes/header.php';
-    ?>
+
 
     <main>
         <h2 class="section_title">Current Events</h2>
@@ -42,7 +44,7 @@ if (!isset($_SESSION['username'])) {
                             <i></i>Date
                         </div>
                     </div>
-                    <button class="buy_button">Buy now</button>
+                    <!--  <button class="buy_button">Buy now</button> --> 
                 </div>
             </div>
 
@@ -62,7 +64,7 @@ if (!isset($_SESSION['username'])) {
                             <i></i>Date
                         </div>
                     </div>
-                    <button class="buy_button">Buy now</button>
+                    <!-- <button class="buy_button">Buy now</button> -->
                 </div>
             </div>
 
@@ -82,7 +84,7 @@ if (!isset($_SESSION['username'])) {
                             <i></i>Date
                         </div>
                     </div>
-                    <button class="buy_button">Buy now</button>
+                    <!-- <button class="buy_button">Buy now</button> -->
                 </div>
             </div>
             <!-- Event_Card_4 -->
@@ -101,7 +103,7 @@ if (!isset($_SESSION['username'])) {
                             <i></i>Date
                         </div>
                     </div>
-                    <button class="buy_button">Buy now</button>
+                    <!-- <button class="buy_button">Buy now</button> -->
                 </div>
             </div>
             <!-- Event_Card_5 -->
@@ -120,7 +122,7 @@ if (!isset($_SESSION['username'])) {
                             <i></i>Date
                         </div>
                     </div>
-                    <button class="buy_button">Buy now</button>
+                    <!-- <button class="buy_button">Buy now</button> -->
                 </div>
             </div>
             <!-- Event_Card_6 -->
@@ -139,7 +141,7 @@ if (!isset($_SESSION['username'])) {
                             <i></i>Date
                         </div>
                     </div>
-                    <button class="buy_button">Buy now</button>
+                    <!-- <button class="buy_button">Buy now</button> -->
                 </div>
             </div>
         </div>
