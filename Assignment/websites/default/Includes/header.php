@@ -21,7 +21,7 @@ require_once '../Includes/session.php';
                 <img src="/Icons/shopping_cart_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.svg" alt="Cart">
             </a> -->
             <a href="/user_profile.php" title="Account">
-                <img src="../Icons/account_circle_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.svg"alt="Profile">
+                <img src="/Icons/account_circle_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.svg" alt="Profile">
             </a>
 
             <?php if (isLoggedIn()): ?>
