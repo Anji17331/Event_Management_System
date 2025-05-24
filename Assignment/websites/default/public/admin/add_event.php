@@ -1,56 +1,91 @@
 <?php
-// any logged-in user can view the dashboard
-require_once '../../Includes/session.php';
+// boot the session & enforce admin
+require_once __DIR__ . '/../../Includes/session.php';
 requireAuth();
+requireAdmin();
 
-// database connection
-require_once '../Includes/config.php';
+// connect to DB
+require_once __DIR__ . '/../../Includes/config.php';
 
-// fetch all events, newest first
-$stmt   = $pdo->query("SELECT * FROM events ORDER BY event_date DESC");
-$events = $stmt->fetchAll();
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $title       = trim($_POST['title']);
+    $description = trim($_POST['description']);
+    $location    = trim($_POST['location']);
+    $category    = trim($_POST['category']);
+    $event_date  = $_POST['event_date'];
+
+    // handle optional upload
+    $image_path = null;
+    if (!empty($_FILES['image']['name']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
+        $uploadDir = __DIR__ . '/../uploads/';
+        if (!is_dir($uploadDir)) {
+            mkdir($uploadDir, 0755, true);
+        }
+        $filename   = time() . '_' . basename($_FILES['image']['name']);
+        $targetPath = $uploadDir . $filename;
+        if (move_uploaded_file($_FILES['image']['tmp_name'], $targetPath)) {
+            // save relative path for web
+            $image_path = 'admin/uploads/' . $filename;
+        }
+    }
+
+    $stmt = $pdo->prepare("
+        INSERT INTO events 
+          (title, description, location, category, event_date, image_path)
+        VALUES
+          (?, ?, ?, ?, ?, ?)
+    ");
+    if ($stmt->execute([$title, $description, $location, $category, $event_date, $image_path])) {
+        $success = "Event “" . htmlspecialchars($title) . "” added.";
+    } else {
+        $error = "Sorry, couldn’t save that event.";
+    }
+}
 ?>
-<?php include 'header.php'; ?>
+<?php include __DIR__ . '/../header.php'; ?>
 
 <main>
-    <h1 class="section_title">Dashboard</h1>
+    <h1 class="section_title">Add New Event</h1>
 
-    <?php if (empty($events)): ?>
-        <p>No events found. <?php if (isAdmin()): ?><a href="add_event.php">Add one now.</a><?php endif; ?></p>
-    <?php else: ?>
-        <div class="event_grid">
-            <?php foreach ($events as $ev): ?>
-                <div class="event_card">
-                    <?php if ($ev['image_path']): ?>
-                        <div class="event_image">
-                            <img src="<?= htmlspecialchars($ev['image_path']) ?>"
-                                alt="<?= htmlspecialchars($ev['title']) ?>">
-                        </div>
-                    <?php endif; ?>
-                    <div class="event_details">
-                        <div class="event_title"><?= htmlspecialchars($ev['title']) ?></div>
-                        <div class="event_description">
-                            <?= nl2br(htmlspecialchars(mb_strimwidth($ev['description'], 0, 100, '…'))) ?>
-                        </div>
-                        <div class="event_meta">
-                            <div class="event_loaction">
-                                <i class="material-icons">location_on</i>
-                                <?= htmlspecialchars($ev['location']) ?>
-                            </div>
-                            <div class="event_date">
-                                <i class="material-icons">calendar_today</i>
-                                <?= date('F j, Y', strtotime($ev['event_date'])) ?>
-                            </div>
-                        </div>
-                        <?php if (isAdmin()): ?>
-                            <a href="edit_event.php?id=<?= $ev['id'] ?>" class="buy_button">Edit</a>
-                            <a href="delete_event.php?id=<?= $ev['id'] ?>" class="buy_button">Delete</a>
-                        <?php endif; ?>
-                    </div>
-                </div>
-            <?php endforeach; ?>
-        </div>
+    <?php if (!empty($success)): ?>
+        <p class="input_feedback valid"><?= $success ?></p>
+    <?php elseif (!empty($error)): ?>
+        <p class="input_feedback invalid"><?= $error ?></p>
     <?php endif; ?>
+
+    <form method="POST" enctype="multipart/form-data">
+        <div class="form_group">
+            <label for="title">Title</label>
+            <input id="title" name="title" type="text" required>
+        </div>
+
+        <div class="form_group">
+            <label for="description">Description</label>
+            <textarea id="description" name="description" rows="5" required></textarea>
+        </div>
+
+        <div class="form_group">
+            <label for="location">Location</label>
+            <input id="location" name="location" type="text" required>
+        </div>
+
+        <div class="form_group">
+            <label for="category">Category</label>
+            <input id="category" name="category" type="text">
+        </div>
+
+        <div class="form_group">
+            <label for="event_date">Date</label>
+            <input id="event_date" name="event_date" type="date" required>
+        </div>
+
+        <div class="form_group">
+            <label for="image">Image (optional)</label>
+            <input id="image" name="image" type="file" accept="image/*">
+        </div>
+
+        <button type="submit" class="buy_button">Add Event</button>
+    </form>
 </main>
 
-<?php include 'footer.php'; ?>
+<?php include __DIR__ . '/../footer.php'; ?>
