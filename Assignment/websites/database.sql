@@ -24,6 +24,40 @@ CREATE DATABASE /*!32312 IF NOT EXISTS*/ `chronosrevel` /*!40100 DEFAULT CHARACT
 USE `chronosrevel`;
 
 --
+-- Table structure for table `events`
+--
+
+DROP TABLE IF EXISTS `events`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `events` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `title` varchar(255) NOT NULL,
+  `description` text NOT NULL,
+  `location` varchar(255) NOT NULL,
+  `category` varchar(100) DEFAULT NULL,
+  `event_date` date NOT NULL,
+  `image_path` varchar(255) DEFAULT NULL,
+  `created_by` int(11) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  PRIMARY KEY (`id`),
+  KEY `idx_event_date` (`event_date`),
+  KEY `fk_events_user` (`created_by`),
+  CONSTRAINT `fk_events_user` FOREIGN KEY (`created_by`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `events`
+--
+
+LOCK TABLES `events` WRITE;
+/*!40000 ALTER TABLE `events` DISABLE KEYS */;
+/*!40000 ALTER TABLE `events` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `users`
 --
 
@@ -78,4 +112,4 @@ USE `mydatabase`;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-04-19 17:36:35
+-- Dump completed on 2025-05-22 14:08:55
