@@ -14,6 +14,7 @@ services:
       MYSQL_ROOT_PASSWORD: v.je
       MYSQL_USER: v.je
       MYSQL_PASSWORD: v.je
+      MYSQL_DATABASE: chronosrevel
     volumes:
       - mysqldata:/var/lib/mysql
     ports:
