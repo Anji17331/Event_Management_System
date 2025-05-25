@@ -1,11 +1,12 @@
 <?php
-// boot the session & enforce admin
-require_once __DIR__ . '/../../Includes/session.php';
-requireAuth();
+// Must be logged in as admin
+require_once __DIR__ . '/../Includes/session.php';
 requireAdmin();
 
-// connect to DB
-require_once __DIR__ . '/../../Includes/config.php';
+// Connect to DB (PDO)
+require_once __DIR__ . '/../Includes/config.php';
+
+$success = $error = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $title       = trim($_POST['title']);
@@ -14,35 +15,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $category    = trim($_POST['category']);
     $event_date  = $_POST['event_date'];
 
-    // handle optional upload
+    // Handle image upload
     $image_path = null;
     if (!empty($_FILES['image']['name']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
         $uploadDir = __DIR__ . '/../uploads/';
         if (!is_dir($uploadDir)) {
             mkdir($uploadDir, 0755, true);
         }
+
         $filename   = time() . '_' . basename($_FILES['image']['name']);
         $targetPath = $uploadDir . $filename;
+
         if (move_uploaded_file($_FILES['image']['tmp_name'], $targetPath)) {
-            // save relative path for web
-            $image_path = 'admin/uploads/' . $filename;
+            $image_path = 'uploads/' . $filename;
         }
     }
 
-    $stmt = $pdo->prepare("
-        INSERT INTO events 
-          (title, description, location, category, event_date, image_path)
-        VALUES
-          (?, ?, ?, ?, ?, ?)
-    ");
-    if ($stmt->execute([$title, $description, $location, $category, $event_date, $image_path])) {
-        $success = "Event “" . htmlspecialchars($title) . "” added.";
-    } else {
-        $error = "Sorry, couldn’t save that event.";
+    // Insert event using PDO
+    try {
+        $stmt = $pdo->prepare("INSERT INTO events (title, description, location, category, event_date, image_path) VALUES (?, ?, ?, ?, ?, ?)");
+        $stmt->execute([$title, $description, $location, $category, $event_date, $image_path]);
+        $success = "Event \"" . htmlspecialchars($title) . "\" added successfully.";
+    } catch (PDOException $e) {
+        $error = "Error saving event: " . $e->getMessage();
     }
 }
 ?>
-<?php include __DIR__ . '/../header.php'; ?>
+
+<?php include __DIR__ . '/../../Includes/header.php'; ?>
 
 <main>
     <h1 class="section_title">Add New Event</h1>
@@ -88,4 +88,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </form>
 </main>
 
-<?php include __DIR__ . '/../footer.php'; ?>
+<?php include __DIR__ . '/../../Includes/footer.php'; ?>

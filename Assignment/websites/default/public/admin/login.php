@@ -1,48 +1,59 @@
+<?php
+include_once '../Includes/config.php';
+session_start();
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $email = trim($_POST['email']);
+    $password = trim($_POST['password']);
+
+    $stmt = $pdo->prepare("SELECT id, name, password FROM admins WHERE email = ?");
+    $stmt->execute([$email]);
+    $admin = $stmt->fetch();
+
+    if ($admin && password_verify($password, $admin['password'])) {
+        $_SESSION['user_id']   = $admin['id'];
+        $_SESSION['user_name'] = $admin['name'];
+        $_SESSION['is_admin']  = true;
+
+        header("Location: dashboard.php");
+        exit();
+    } else {
+        $error = "Invalid email or password.";
+    }
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-    <link rel="stylesheet" href="..\vje.css">
+    <title>Admin Login</title>
+    <link rel="stylesheet" href="../vje.css">
 </head>
 
 <body>
     <div class="container">
         <div class="left">
-            <h1>Evoke Limitless possibilities <br> and new experience</h1>
+            <h1>Welcome back, Admin</h1>
         </div>
         <div class="right">
             <div class="card">
-                <div class="buttons">
-                    <button> ADMIN</button>
-                </div>
                 <div class="logo">Chronos Revel</div>
-                <p><strong>Welcome back</strong></p>
-                <p>Enter your Details to login</p>
+                <p><strong>Admin Login</strong></p>
+                <?php if (!empty($error)): ?>
+                    <p class="input_feedback invalid"><?= htmlspecialchars($error) ?></p>
+                <?php endif; ?>
                 <form action="" method="POST">
-                    <input type="text" placeholder="username" name="username" required>
-                    <input type="password" placeholder="password" name="password" required>
-                    <div class="forgot_password">
-                        <a href="#">Forgot password?</a>
-                    </div>
+                    <input type="email" name="email" placeholder="Email" required>
+                    <input type="password" name="password" placeholder="Password" required>
                     <button type="submit">Login</button>
                 </form>
                 <div class="register_section">
-                    <p>Don't have an account? <a href="./registration.php">Register</a></p>
-                </div>
-                <div class="social_login">
-                    <p>Or</p>
-                    <p>Signup with</p>
-                    <div class="social_buttons">
-                        <button><img src="" alt="Google"></button>
-                        <button><img src="" alt="Facebook"></button>
-                        <button><img src="" alt="Twitter"></button>
-                    </div>
+                    <p>Don't have an account? <a href="registration.php">Register</a></p>
                 </div>
             </div>
         </div>
+    </div>
 </body>
 
 </html>

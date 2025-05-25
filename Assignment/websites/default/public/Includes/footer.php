@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="../vje.css">
 <footer>
     <span class="footer_logo">Chronos Revel</span>
     <div class="footer_contact">
@@ -18,7 +19,7 @@
         </div>
     </div>
 </footer>
-<a href="#" class="help_button">
+<!-- <a href="#" class="help_button">
     <span class="question_mark">?</span>
     <span class="help_text">Help</span>
-</a>
+</a> -->

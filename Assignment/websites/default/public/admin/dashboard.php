@@ -1,34 +1,30 @@
 <?php
-// must be logged in
-require_once __DIR__ . '/../../Includes/session.php';
-requireAuth();
+// Must be logged in as admin
+require_once __DIR__ . '/../Includes/session.php';
+requireAdmin();
 
-// connect
-require_once __DIR__ . '/../../Includes/config.php';
+// Connect to DB
+require_once __DIR__ . '/../Includes/config.php';
 
-// pull all events newest first
-$stmt   = $pdo->query("SELECT * FROM events ORDER BY event_date DESC");
+// Fetch events using PDO
+$stmt = $pdo->query("SELECT * FROM events ORDER BY event_date DESC");
 $events = $stmt->fetchAll();
 ?>
-<?php include __DIR__ . '/../header.php'; ?>
+
+<?php include __DIR__ . '/../Includes/header.php'; ?>
 
 <main>
     <h1 class="section_title">Dashboard</h1>
 
     <?php if (empty($events)): ?>
-        <p>No events yet.
-            <?php if (isAdmin()): ?>
-                <a href="add_event.php">Add one now</a>
-            <?php endif; ?>
-        </p>
+        <p>No events yet. <a href="add_event.php">Add one now</a></p>
     <?php else: ?>
         <div class="event_grid">
             <?php foreach ($events as $ev): ?>
                 <div class="event_card">
-                    <?php if ($ev['image_path']): ?>
+                    <?php if (!empty($ev['image_path'])): ?>
                         <div class="event_image">
-                            <img src="<?= htmlspecialchars($ev['image_path']) ?>"
-                                alt="<?= htmlspecialchars($ev['title']) ?>">
+                            <img src="<?= htmlspecialchars($ev['image_path']) ?>" alt="<?= htmlspecialchars($ev['title']) ?>">
                         </div>
                     <?php endif; ?>
 
@@ -48,10 +44,8 @@ $events = $stmt->fetchAll();
                             </div>
                         </div>
 
-                        <?php if (isAdmin()): ?>
-                            <a href="edit_event.php?id=<?= $ev['id'] ?>" class="buy_button">Edit</a>
-                            <a href="delete_event.php?id=<?= $ev['id'] ?>" class="buy_button">Delete</a>
-                        <?php endif; ?>
+                        <a href="edit_event.php?id=<?= $ev['id'] ?>" class="buy_button">Edit</a>
+                        <a href="delete_event.php?id=<?= $ev['id'] ?>" class="buy_button" onclick="return confirm('Are you sure you want to delete this event?')">Delete</a>
                     </div>
                 </div>
             <?php endforeach; ?>
@@ -59,4 +53,4 @@ $events = $stmt->fetchAll();
     <?php endif; ?>
 </main>
 
-<?php include __DIR__ . '/../footer.php'; ?>    
+<?php include __DIR__ . '/../Includes/footer.php'; ?>

@@ -1,7 +1,7 @@
 <?php
-require_once '../Includes/session.php';
+require_once __DIR__ . '/session.php';
 ?>
-
+<link rel="stylesheet" href="../vje.css">
 <!-- Sticky Header -->
 <div class="sticky_header">
     <header>
@@ -20,25 +20,27 @@ require_once '../Includes/session.php';
             <!-- <a href="/cart.php" title="Cart">
                 <img src="/Icons/shopping_cart_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.svg" alt="Cart">
             </a> -->
-            <a href="/user_profile.php" title="Account">
+            <a href="/admin/admin_profile.php" title="Account">
                 <img src="/Icons/account_circle_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.svg" alt="Profile">
             </a>
 
             <?php if (isLoggedIn()): ?>
-                <a class="login_button" href="/logout.php">Logout</a>
+                <a class="login_button" href="/admin/logout.php">Logout</a>
             <?php else: ?>
-                <a class="login_button" href="/login.php">Login</a>
+                <a class="login_button" href="/admin/login.php">Login</a>
             <?php endif; ?>
         </div>
     </header>
 
     <!-- Navigation -->
-    <nav>
-        <a href="/index.php">Home</a>
-        <a href="/event_listing.php?filter=past">History</a>
-        <a href="/event_listing.php?filter=upcoming">Upcoming</a>
-        <a href="#">About us</a>
-    </nav>
+    <?php if (!isLoggedIn() || $_SESSION['is_admin'] !== true): ?>
+        <nav>
+            <a href="/index.php">Home</a>
+            <a href="/event_listing.php?filter=past">History</a>
+            <a href="/event_listing.php?filter=upcoming">Upcoming</a>
+            <a href="#">About us</a>
+        </nav>
+    <?php endif; ?>
 </div>
 
 <!-- Sticky Scroll Shadow -->

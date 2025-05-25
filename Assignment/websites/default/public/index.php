@@ -1,145 +1,83 @@
+<?php ob_start(); ?>
+<?php
+require_once __DIR__ . '/../Includes/session.php';
+
+if (isLoggedIn() && $_SESSION['is_admin'] === true) {
+    header('Location: admin/dashboard.php');
+    exit();
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="vje.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Events | Chronos Revel</title>
+    <link rel="stylesheet" href="vje.css" />
 </head>
 
 <body>
-    <?php
-    include '../includes/header.php';
-    ?>
+    <?php include '../Includes/header.php'; ?>
 
     <main>
         <h2 class="section_title">Current Events</h2>
-
-        <div class="event_grid">
-
-            <!-- Event_Card_1 -->
-            <div class="event_card">
-                <div class="event_image">
-                    <img src="Wallpapers/5825849.jpg" alt="Event 1">
-                </div>
-                <div class="event_details">
-                    <h3 class="event_title">Arjit singh live in Mumbai</h3>
-                    <p class="event_description">Experience India's most beloved voice live</p>
-                    <div class="event_meta">
-                        <div class="event_location">
-                            <i></i> Mumbai
-                        </div>
-                        <div class="event_date">
-                            <i></i>Date
-                        </div>
-                    </div>
-                    <button class="buy_button">Buy now</button>
-                </div>
-            </div>
-
-            <!-- Event_Card_2 -->
-            <div class="event_card">
-                <div class="event_image">
-                    <img src="Wallpapers/5825849.jpg" alt="Event 3">
-                </div>
-                <div class="event_details">
-                    <h3 class="event_title">Karthik musical concert live in chennai</h3>
-                    <p class="event_description">Experience India's most beloved voice live</p>
-                    <div class="event_meta">
-                        <div class="event_location">
-                            <i></i> chennai
-                        </div>
-                        <div class="event_date">
-                            <i></i>Date
-                        </div>
-                    </div>
-                    <button class="buy_button">Buy now</button>
-                </div>
-            </div>
-
-            <!-- Event_Card_3 -->
-            <div class="event_card">
-                <div class="event_image">
-                    <img src="Wallpapers/5825849.jpg" alt="Event 3">
-                </div>
-                <div class="event_details">
-                    <h3 class="event_title">SS Thaman's live in Hyderabad</h3>
-                    <p class="event_description">Experience India's most beloved voice live</p>
-                    <div class="event_meta">
-                        <div class="event_location">
-                            <i></i> Hyderabad
-                        </div>
-                        <div class="event_date">
-                            <i></i>Date
-                        </div>
-                    </div>
-                    <button class="buy_button">Buy now</button>
-                </div>
-            </div>
-            <!-- Event_Card_4 -->
-            <div class="event_card">
-                <div class="event_image">
-                    <img src="Wallpapers/5825849.jpg" alt="Event 4">
-                </div>
-                <div class="event_details">
-                    <h3 class="event_title">Arjit singh live in Mumbai</h3>
-                    <p class="event_description">Experience India's most beloved voice live</p>
-                    <div class="event_meta">
-                        <div class="event_location">
-                            <i></i> Mumbai
-                        </div>
-                        <div class="event_date">
-                            <i></i>Date
-                        </div>
-                    </div>
-                    <button class="buy_button">Buy now</button>
-                </div>
-            </div>
-            <!-- Event_Card_5 -->
-            <div class="event_card">
-                <div class="event_image">
-                    <img src="Wallpapers/5825849.jpg" alt="Event 5">
-                </div>
-                <div class="event_details">
-                    <h3 class="event_title">Arjit singh live in Mumbai</h3>
-                    <p class="event_description">Experience India's most beloved voice live</p>
-                    <div class="event_meta">
-                        <div class="event_location">
-                            <i></i> Mumbai
-                        </div>
-                        <div class="event_date">
-                            <i></i>Date
-                        </div>
-                    </div>
-                    <button class="buy_button">Buy now</button>
-                </div>
-            </div>
-            <!-- Event_Card_6 -->
-            <div class="event_card">
-                <div class="event_image">
-                    <img src="Wallpapers/5825849.jpg" alt="Event 6">
-                </div>
-                <div class="event_details">
-                    <h3 class="event_title">Arjit singh live in Mumbai</h3>
-                    <p class="event_description">Experience India's most beloved voice live</p>
-                    <div class="event_meta">
-                        <div class="event_location">
-                            <i></i> Mumbai
-                        </div>
-                        <div class="event_date">
-                            <i></i>Date
-                        </div>
-                    </div>
-                    <button class="buy_button">Buy now</button>
-                </div>
-            </div>
+        <div id="event_grid" class="event_grid">
+            <!-- Events will be injected here by JavaScript -->
+            <p>Loading events...</p>
         </div>
     </main>
 
-    <?php
-    include '../includes/footer.php';
-    ?>
+    <?php include '../Includes/footer.php'; ?>
+
+    <script>
+        fetch('api/get_events.php')
+            .then(res => res.json())
+            .then(response => {
+                const container = document.getElementById('event_grid');
+                if (response.status !== 'success') {
+                    container.innerHTML = `<p>Error loading events.</p>`;
+                    return;
+                }
+
+                const events = response.data;
+                if (!events.length) {
+                    container.innerHTML = `<p>No events available.</p>`;
+                    return;
+                }
+
+                container.innerHTML = events.map(ev => `
+      <div class="event_card">
+        ${ev.image_path ? `
+          <div class="event_image">
+            <img src="${ev.image_path}" alt="${ev.title}">
+          </div>` : ''
+        }
+
+        <div class="event_details">
+          <h3 class="event_title">${ev.title}</h3>
+          <p class="event_description">${ev.description.substring(0, 100)}...</p>
+          <div class="event_meta">
+            <div class="event_location">
+              <i></i> ${ev.location}
+            </div>
+            <div class="event_date">
+              <i></i> ${ev.event_date}
+            </div>
+          </div>
+          <button class="register_button">Register</button>
+        </div>
+      </div>
+    `).join('');
+            })
+            .catch(err => {
+                document.getElementById('event_grid').innerHTML = `<p>Failed to load events.</p>`;
+                console.error(err);
+            });
+    </script>
+
 </body>
 
 </html>
+
+<?php ob_end_flush(); ?>

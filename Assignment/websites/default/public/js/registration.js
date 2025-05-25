@@ -1,4 +1,4 @@
-// Validate input fields on blur
+// Validate email input field on blur
 function validateField(field) {
     const inputElement = document.querySelector(`input[name="${field}"]`);
     const value = inputElement.value.trim();
@@ -23,11 +23,7 @@ function validateField(field) {
         .catch(error => console.error('Error:', error));
 }
 
-// Attach "blur" event listeners
-document.querySelector('input[name="username"]').addEventListener('blur', function () {
-    validateField('username');
-});
-
+// Attach "blur" event listener only for email
 document.querySelector('input[name="email"]').addEventListener('blur', function () {
     validateField('email');
 });
@@ -42,6 +38,7 @@ document.querySelector('form').addEventListener('submit', function (event) {
         alert('Passwords do not match!');
     }
 });
+
 // Show/hide password functionality
 function togglePasswordVisibility() {
     const passwordField = document.querySelector('input[name="password"]');

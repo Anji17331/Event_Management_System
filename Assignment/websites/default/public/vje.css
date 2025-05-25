@@ -216,18 +216,18 @@ main {
   margin-bottom: 15px;
 }
 
-.event_loaction,
+.event_location,
 .event_date {
   display: flex;
   align-items: center;
 }
 
-.event_loaction i,
+.event_lotion i,
 .event_date i {
   margin-right: 5px;
 }
 
-.buy_button {
+.register_button {
   background-color: #4b0082;
   color: white;
   border: none;
@@ -237,7 +237,7 @@ main {
   font-weight: 600;
   transition: background-color 0.3s ease;
 }
-.buy_button:hover {
+.register_button:hover {
   background-color: #3a006c;
 }
 
