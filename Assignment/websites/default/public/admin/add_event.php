@@ -35,14 +35,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
         $stmt = $pdo->prepare("INSERT INTO events (title, description, location, category, event_date, image_path) VALUES (?, ?, ?, ?, ?, ?)");
         $stmt->execute([$title, $description, $location, $category, $event_date, $image_path]);
-        $success = "Event \"" . htmlspecialchars($title) . "\" added successfully.";
+        $success = "Event Added successfully.";
+        header("Location: dashboard.php");
+        exit;
     } catch (PDOException $e) {
         $error = "Error saving event: " . $e->getMessage();
     }
 }
 ?>
 
-<?php include __DIR__ . '/../../Includes/header.php'; ?>
+<?php include __DIR__ . '/../Includes/header_admin.php'; ?>
 
 <main>
     <h1 class="section_title">Add New Event</h1>
@@ -88,4 +90,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </form>
 </main>
 
-<?php include __DIR__ . '/../../Includes/footer.php'; ?>
+<?php include __DIR__ . '/../Includes/footer.php'; ?>

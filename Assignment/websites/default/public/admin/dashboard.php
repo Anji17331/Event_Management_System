@@ -7,11 +7,13 @@ requireAdmin();
 require_once __DIR__ . '/../Includes/config.php';
 
 // Fetch events using PDO
-$stmt = $pdo->query("SELECT * FROM events ORDER BY event_date DESC");
+$stmt = $pdo->prepare("SELECT * FROM events WHERE event_date >= CURDATE() ORDER BY event_date ASC");
+$stmt->execute();
 $events = $stmt->fetchAll();
+
 ?>
 
-<?php include __DIR__ . '/../Includes/header.php'; ?>
+<?php include __DIR__ . '/../Includes/header_admin.php'; ?>
 
 <main>
     <h1 class="section_title">Dashboard</h1>
@@ -19,36 +21,32 @@ $events = $stmt->fetchAll();
     <?php if (empty($events)): ?>
         <p>No events yet. <a href="add_event.php">Add one now</a></p>
     <?php else: ?>
-        <div class="event_grid">
-            <?php foreach ($events as $ev): ?>
-                <div class="event_card">
-                    <?php if (!empty($ev['image_path'])): ?>
-                        <div class="event_image">
-                            <img src="<?= htmlspecialchars($ev['image_path']) ?>" alt="<?= htmlspecialchars($ev['title']) ?>">
-                        </div>
-                    <?php endif; ?>
-
-                    <div class="event_details">
-                        <div class="event_title"><?= htmlspecialchars($ev['title']) ?></div>
-                        <div class="event_description">
-                            <?= nl2br(htmlspecialchars(mb_strimwidth($ev['description'], 0, 100, '…'))) ?>
-                        </div>
-                        <div class="event_meta">
-                            <div class="event_loaction">
-                                <i class="material-icons">location_on</i>
-                                <?= htmlspecialchars($ev['location']) ?>
-                            </div>
-                            <div class="event_date">
-                                <i class="material-icons">calendar_today</i>
-                                <?= date('F j, Y', strtotime($ev['event_date'])) ?>
-                            </div>
-                        </div>
-
-                        <a href="edit_event.php?id=<?= $ev['id'] ?>" class="buy_button">Edit</a>
-                        <a href="delete_event.php?id=<?= $ev['id'] ?>" class="buy_button" onclick="return confirm('Are you sure you want to delete this event?')">Delete</a>
-                    </div>
-                </div>
-            <?php endforeach; ?>
+        <div class="event_table_container">
+            <div class="table_header">
+                <h2>Current Events</h2>
+                <!-- <a href="add_event.php" class="new_event_button">➕ New event</a> -->
+            </div>
+            <table class="styled-table">
+                <thead>
+                    <tr>
+                        <th>Event Name</th>
+                        <th>Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($events as $ev): ?>
+                        <tr>
+                            <td><?= htmlspecialchars($ev['title']) ?></td>
+                            <td><?= date('d-m-Y', strtotime($ev['event_date'])) ?></td>
+                            <td>
+                                <a class="btn-edit" href="edit_event.php?id=<?= $ev['id'] ?>" title="Edit">Edit</a>
+                                <a class="btn-delete" href="delete_event.php?id=<?= $ev['id'] ?>" onclick="return confirm('Are you sure you want to delete this event?')" title="Delete">Delete</a>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
         </div>
     <?php endif; ?>
 </main>

@@ -47,13 +47,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt = $pdo->prepare("UPDATE events SET title = ?, description = ?, location = ?, category = ?, event_date = ?, image_path = ? WHERE id = ?");
         $stmt->execute([$title, $description, $location, $category, $event_date, $image_path, $id]);
         $success = "Event updated successfully.";
+        header("Location: dashboard.php");
+        exit;
     } catch (PDOException $e) {
         $error = "Update failed: " . $e->getMessage();
     }
 }
 ?>
 
-<?php include __DIR__ . '/../../Includes/header.php'; ?>
+<?php include __DIR__ . '/../Includes/header_admin.php'; ?>
 
 <main>
     <h1 class="section_title">Edit Event</h1>
@@ -88,12 +90,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
 
         <div class="form_group">
-            <label>Change Image (optional)</label>
-            <input name="image" type="file" accept="image/*">
+            <label>Change Image (optional)</label><br>
+
+            <?php if (!empty($event['image_path'])): ?>
+                <img id="imagePreview" src="../<?= htmlspecialchars($event['image_path']) ?>" alt="Current Image"
+                    style="display:block; max-height:150px; margin-bottom:10px; border-radius: 6px;">
+            <?php else: ?>
+                <img id="imagePreview" src="" alt="Image Preview" style="display:none; max-height:150px; margin-bottom:10px;">
+            <?php endif; ?>
+
+            <input name="image" type="file" accept="image/*" onchange="previewImage(this)">
         </div>
 
         <button type="submit" class="buy_button">Update Event</button>
     </form>
+    <script>
+        function previewImage(input) {
+            const preview = document.getElementById('imagePreview');
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+    </script>
+
 </main>
 
-<?php include __DIR__ . '/../../Includes/footer.php'; ?>
+<?php include __DIR__ . '/../Includes/footer.php'; ?>
