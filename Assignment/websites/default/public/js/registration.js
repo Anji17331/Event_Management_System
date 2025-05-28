@@ -1,58 +1,78 @@
-// Validate email input field on blur
-function validateField(field) {
-    const inputElement = document.querySelector(`input[name="${field}"]`);
-    const value = inputElement.value.trim();
-    if (!value) return;
+// Utility: delays function execution to avoid rapid calls (debounce)
+function debounce(fn, delay = 300) {
+    let timer;
+    return (...args) => {
+        clearTimeout(timer);
+        timer = setTimeout(() => fn(...args), delay);
+    };
+}
 
-    fetch('../Auth/register_validation.php', {
+// Check if username is valid and available
+function validateUsername() {
+    const input = document.querySelector('input[name="username"]');
+    const msgEl = document.getElementById('username_availability');
+    if (!input || !msgEl) return;
+
+    const value = input.value.trim();
+
+    // Hide message if field is empty
+    if (!value) {
+        msgEl.style.display = 'none';
+        return;
+    }
+
+    // Basic username format check
+    const rx = /^\w{3,20}$/;
+    if (!rx.test(value)) {
+        msgEl.textContent = 'Username must be 3–20 letters, numbers, or underscores';
+        msgEl.style.color = 'orange';
+        msgEl.style.display = 'block';
+        return;
+    }
+
+    // Send AJAX request to check username availability
+    fetch('../admin/register_validation.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: `field=${field}&value=${encodeURIComponent(value)}`
+        body: `field=username&value=${encodeURIComponent(value)}`
     })
-        .then(response => response.json())
+        .then(res => res.ok ? res.json() : Promise.reject(res.statusText))
         .then(data => {
-            const availabilityElement = document.getElementById(`${field}_availability`);
-            if (availabilityElement) {
-                availabilityElement.innerHTML = data.exists
-                    ? `${field.charAt(0).toUpperCase() + field.slice(1)} already taken`
-                    : `${field.charAt(0).toUpperCase() + field.slice(1)} available`;
-                availabilityElement.style.color = data.exists ? 'red' : 'green';
-                availabilityElement.style.display = 'block';
-            }
+            msgEl.textContent = data.exists ? 'Username already taken' : 'Username available';
+            msgEl.style.color = data.exists ? 'red' : 'green';
+            msgEl.style.display = 'block';
         })
-        .catch(error => console.error('Error:', error));
+        .catch(err => {
+            console.error('Validation error:', err);
+            msgEl.textContent = 'Validation service unavailable';
+            msgEl.style.color = 'gray';
+            msgEl.style.display = 'block';
+        });
 }
 
-// Attach "blur" event listener only for email
-document.querySelector('input[name="email"]').addEventListener('blur', function () {
-    validateField('email');
-});
+// Setup event listeners after page loads
+document.addEventListener('DOMContentLoaded', () => {
+    const usernameInput = document.querySelector('input[name="username"]');
+    const form = document.querySelector('form');
 
-// Password confirmation check before form submit
-document.querySelector('form').addEventListener('submit', function (event) {
-    const password = document.querySelector('input[name="password"]').value.trim();
-    const confirmPassword = document.querySelector('input[name="confirm_password"]').value.trim();
+    // Validate username on blur, with delay
+    if (usernameInput) {
+        usernameInput.addEventListener('blur', debounce(validateUsername, 400));
+    }
 
-    if (password !== confirmPassword) {
-        event.preventDefault();
-        alert('Passwords do not match!');
+    // Basic client-side password match check before form submission
+    if (form) {
+        form.addEventListener('submit', e => {
+            const pw = document.querySelector('input[name="password"]').value.trim();
+            const cpw = document.querySelector('input[name="confirm_password"]').value.trim();
+
+            if (!pw || !cpw) {
+                e.preventDefault();
+                alert('Please enter and confirm the password.');
+            } else if (pw !== cpw) {
+                e.preventDefault();
+                alert('Passwords do not match!');
+            }
+        });
     }
 });
-
-// Show/hide password functionality
-function togglePasswordVisibility() {
-    const passwordField = document.querySelector('input[name="password"]');
-    const confirmPasswordField = document.querySelector('input[name="confirm_password"]');
-    const passwordToggle = document.getElementById('password-toggle');
-
-    if (passwordField.type === 'password') {
-        passwordField.type = 'text';
-        confirmPasswordField.type = 'text';
-        passwordToggle.textContent = 'Hide Passwords';
-    } else {
-        passwordField.type = 'password';
-        confirmPasswordField.type = 'password';
-        passwordToggle.textContent = 'Show Passwords';
-    }
-}
-document.getElementById('password-toggle').addEventListener('click', togglePasswordVisibility);

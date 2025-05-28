@@ -1,7 +1,8 @@
-<!-- Link to the shared stylesheet for consistent footer styling -->
+<!-- Footer Stylesheet -->
 <link rel="stylesheet" href="../vje.css">
 
 <footer class="footer">
+    <!-- Contact Details -->
     <div class="footer_section footer_contact">
         <span class="footer_logo">Chronos Revel</span>
         <p>Contact us at:</p>
@@ -9,6 +10,7 @@
         <p>chronosrevel@gmail.com</p>
     </div>
 
+    <!-- Navigation Links -->
     <div class="footer_section footer_links">
         <h3>Quick Links</h3>
         <ul>
@@ -19,11 +21,13 @@
         </ul>
     </div>
 
+    <!-- Mission Statement -->
     <div class="footer_section footer_about">
         <h3>Our Mission</h3>
         <p>Connecting you with vibrant community events—discover, join, and make memories!</p>
     </div>
 
+    <!-- Social Media Icons -->
     <div class="footer_section footer_social">
         <h3>Follow Us</h3>
         <div class="social_icon">

@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // 🔍 Table Search
+    // Table row search by title or date
     const searchInput = document.getElementById('global_search_input');
     const tableBody = document.getElementById('event_table_body');
 
@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 👤 Profile Card Toggle
+    // Toggle admin profile card
     const toggle = document.getElementById('profileToggle');
     const card = document.getElementById('profileCard');
 

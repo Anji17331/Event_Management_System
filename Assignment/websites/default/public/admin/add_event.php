@@ -1,26 +1,28 @@
 <?php
-// Must be logged in as admin
+// Start session and ensure admin access
 require_once __DIR__ . '/../Includes/session.php';
 requireAdmin();
 
-// Connect to DB (PDO)
+// Connect to the database
 require_once __DIR__ . '/../Includes/config.php';
 
 $success = $error = '';
 
+// Handle form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Collect and sanitize inputs
     $title       = trim($_POST['title']);
     $description = trim($_POST['description']);
     $location    = trim($_POST['location']);
     $category    = trim($_POST['category']);
     $event_date  = $_POST['event_date'];
 
-    // Handle image upload
+    // Handle image upload (if provided)
     $image_path = null;
     if (!empty($_FILES['image']['name']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
         $uploadDir = __DIR__ . '/../uploads/';
         if (!is_dir($uploadDir)) {
-            mkdir($uploadDir, 0755, true);
+            mkdir($uploadDir, 0755, true); // Create upload directory if not exists
         }
 
         $filename   = time() . '_' . basename($_FILES['image']['name']);
@@ -31,31 +33,49 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 
-    // Insert event using PDO
+    // Insert event into database
     try {
-        $stmt = $pdo->prepare("INSERT INTO events (title, description, location, category, event_date, image_path) VALUES (?, ?, ?, ?, ?, ?)");
-        $stmt->execute([$title, $description, $location, $category, $event_date, $image_path]);
-        $success = "Event Added successfully.";
+        $createdBy = $_SESSION['user_id'];
+
+        $stmt = $pdo->prepare(
+            "INSERT INTO events 
+               (title, description, location, category, event_date, image_path, created_by)
+             VALUES (?, ?, ?, ?, ?, ?, ?)"
+        );
+
+        $stmt->execute([
+            $title,
+            $description,
+            $location,
+            $category,
+            $event_date,
+            $image_path,
+            $createdBy
+        ]);
+
+        // Redirect to dashboard on success
         header("Location: dashboard.php");
         exit;
     } catch (PDOException $e) {
-        $error = "Error saving event: " . $e->getMessage();
+        // Show error message if DB insert fails
+        $error = "Error saving event: " . htmlspecialchars($e->getMessage());
     }
 }
 ?>
 
 <?php include __DIR__ . '/../Includes/header_admin.php'; ?>
-<title>Admin | Add Event</title>
+<title>Admin | Add Event · ChronosRevel</title>
+
 <main>
     <h1 class="section_title">Add New Event</h1>
 
-    <?php if (!empty($success)): ?>
-        <p class="input_feedback valid"><?= $success ?></p>
-    <?php elseif (!empty($error)): ?>
-        <p class="input_feedback invalid"><?= $error ?></p>
+    <!-- Show error message if any -->
+    <?php if ($error): ?>
+        <div class="input_feedback invalid"><?= $error ?></div>
     <?php endif; ?>
 
-    <form method="POST" enctype="multipart/form-data">
+    <!-- Event creation form -->
+    <form method="POST" enctype="multipart/form-data" novalidate>
         <div class="form_group">
             <label for="title">Title</label>
             <input id="title" name="title" type="text" required>
@@ -86,7 +106,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <input id="image" name="image" type="file" accept="image/*">
         </div>
 
-        <button type="submit" class="buy_button">Add Event</button>
+        <div class="form_group">
+            <button type="submit" class="buy_button">Add Event</button>
+        </div>
     </form>
 </main>
 

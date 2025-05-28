@@ -1,3 +1,4 @@
+// Store all events and track current page
 let allEvents = [];
 let currentPage = 1;
 const eventsPerPage = 8;
@@ -9,10 +10,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const categorySelect = document.getElementById('event_filter');
     const filterType = document.getElementById('filter_type')?.value || '';
 
+    // Build API URL based on filter
     const urlParams = new URLSearchParams(window.location.search);
     const filterParam = urlParams.get('filter') || '';
     const apiUrl = `api/get_events.php?filter=${filterParam}`;
 
+    // Fetch events from server
     fetch(apiUrl)
         .then(res => res.json())
         .then(response => {
@@ -22,23 +25,30 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             allEvents = response.data;
-            applyFilters(); // Initial rendering
+            applyFilters(); // Show events
         })
         .catch(err => {
             grid.innerHTML = `<p>Failed to load events.</p>`;
             console.error(err);
         });
 
-    if (searchInput) searchInput.addEventListener('input', () => {
-        currentPage = 1;
-        applyFilters();
-    });
+    // Filter on search input
+    if (searchInput) {
+        searchInput.addEventListener('input', () => {
+            currentPage = 1;
+            applyFilters();
+        });
+    }
 
-    if (categorySelect) categorySelect.addEventListener('change', () => {
-        currentPage = 1;
-        applyFilters();
-    });
+    // Filter on category change
+    if (categorySelect) {
+        categorySelect.addEventListener('change', () => {
+            currentPage = 1;
+            applyFilters();
+        });
+    }
 
+    // Apply search, category, and date filters
     function applyFilters() {
         const search = searchInput?.value?.toLowerCase() || '';
         const category = categorySelect?.value?.toLowerCase() || '';
@@ -51,11 +61,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 ev.location.toLowerCase().includes(search);
 
             const matchesCategory = !category || ev.category.toLowerCase() === category;
-
             const isPast = filterType === 'past' && ev.event_date < today;
             const isUpcoming = filterType === 'upcoming' && ev.event_date >= today;
             const noTimeFilter = !filterType;
-
             const matchesDate = noTimeFilter || isPast || isUpcoming;
 
             return matchesSearch && matchesCategory && matchesDate;
@@ -64,6 +72,7 @@ document.addEventListener('DOMContentLoaded', () => {
         renderPaginatedEvents(filtered);
     }
 
+    // Show events for current page
     function renderPaginatedEvents(events) {
         const totalPages = Math.ceil(events.length / eventsPerPage);
         const start = (currentPage - 1) * eventsPerPage;
@@ -73,6 +82,7 @@ document.addEventListener('DOMContentLoaded', () => {
         renderPaginationControls(totalPages);
     }
 
+    // Render event cards
     function renderEvents(events) {
         if (!events.length) {
             grid.innerHTML = `<p>No matching events found.</p>`;
@@ -103,6 +113,7 @@ document.addEventListener('DOMContentLoaded', () => {
         `).join('');
     }
 
+    // Render pagination buttons
     function renderPaginationControls(totalPages) {
         if (totalPages <= 1) {
             pagination.innerHTML = '';
@@ -123,26 +134,23 @@ document.addEventListener('DOMContentLoaded', () => {
         pagination.innerHTML = buttons;
     }
 
+    // Change current page
     window.changePage = function (pageNum) {
         currentPage = pageNum;
         applyFilters();
     };
 
+    // Toggle full/short event description
     window.toggleDescription = function (index) {
         const shortText = document.getElementById(`short-${index}`);
         const fullText = document.getElementById(`full-${index}`);
         const button = document.querySelector(`.toggle_description_btn[onclick="toggleDescription(${index})"]`);
 
-        if (fullText.style.display === 'none') {
-            shortText.style.display = 'none';
-            fullText.style.display = 'inline';
-            fullText.classList.add('fade-in');
-            button.innerText = 'Less';
-        } else {
-            fullText.classList.remove('fade-in');
-            fullText.style.display = 'none';
-            shortText.style.display = 'inline';
-            button.innerText = 'More';
-        }
+        const showingFull = fullText.style.display !== 'none';
+
+        shortText.style.display = showingFull ? 'inline' : 'none';
+        fullText.style.display = showingFull ? 'none' : 'inline';
+        fullText.classList.toggle('fade-in', !showingFull);
+        button.innerText = showingFull ? 'More' : 'Less';
     };
 });

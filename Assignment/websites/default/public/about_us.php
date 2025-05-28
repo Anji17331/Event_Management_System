@@ -1,4 +1,5 @@
 <?php
+// Start session to manage user state
 require_once __DIR__ . '/Includes/session.php';
 ?>
 <!DOCTYPE html>
@@ -12,11 +13,15 @@ require_once __DIR__ . '/Includes/session.php';
 </head>
 
 <body>
-    <?php include './Includes/header_public.php'; ?>
+    <?php
+    // Include public site header
+    include './Includes/header_public.php';
+    ?>
 
     <main style="max-width: 1000px; margin: 40px auto; padding: 20px;">
         <h1 class="section_title" style="margin-bottom: 25px;">About Chronos Revel</h1>
 
+        <!-- Main content section describing the purpose and vision of the platform -->
         <section style="background-color: white; padding: 30px; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
             <p style="line-height: 1.8; font-size: 1.05rem; color: #333;">
                 <strong>Chronos Revel</strong> is a modern and vibrant event management system designed to bring your experiences to life.
@@ -35,6 +40,7 @@ require_once __DIR__ . '/Includes/session.php';
                 and be part of experiences worth remembering.
             </p>
 
+            <!-- Contact information -->
             <h3 style="margin-top: 30px; color: #4b0082;">Get in Touch</h3>
             <ul style="list-style: none; padding-left: 0; line-height: 2;">
                 <li>Email: <a href="mailto:chronosrevel@gmail.com">chronosrevel@gmail.com</a></li>
@@ -43,7 +49,10 @@ require_once __DIR__ . '/Includes/session.php';
         </section>
     </main>
 
-    <?php include './Includes/footer.php'; ?>
+    <?php
+    // Include public site footer
+    include './Includes/footer.php';
+    ?>
 </body>
 
 </html>
