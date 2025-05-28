@@ -1,6 +1,6 @@
 let allEvents = [];
 let currentPage = 1;
-const eventsPerPage = 8;
+const eventsPerPage = 6;
 
 document.addEventListener('DOMContentLoaded', () => {
     const grid = document.getElementById('event_grid');

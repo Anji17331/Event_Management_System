@@ -14,6 +14,7 @@ $events = $stmt->fetchAll();
 ?>
 
 <?php include __DIR__ . '/../Includes/header_admin.php'; ?>
+<title>Admin | Dashboard</title>
 
 <main>
     <h1 class="section_title">Dashboard</h1>

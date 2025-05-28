@@ -10,6 +10,14 @@
   font-style: normal;
 }
 
+/* Import Abril Fatface - decorative headings if needed elsewhere */
+@font-face {
+  font-family: "Abril Fatface";
+  src: url("../fonts/AbrilFatface-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
 /* Import Dancing Script - for special headers and logo styling */
 @font-face {
   font-family: "Dancing Script";
@@ -24,6 +32,7 @@ Global reset & base font */
   font-size: 1rem;
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
 }
 
 /* ==========================================
@@ -432,19 +441,17 @@ main {
 }
 .event_grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 1rem;
   margin-top: 1.5rem;
   padding: 0 1.5rem;
-  justify-items: center;
 }
 
 .event_card {
-  max-width: 250px;
   background: #fff;
   border-radius: 0.5rem;
   overflow: hidden;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
   display: flex;
   flex-direction: column;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -485,7 +492,7 @@ main {
   color: #333;
   margin-bottom: 0.5rem;
   line-height: 1.3;
-  font-family: "Lexend Deca", sans-serif;
+  font-family: "Abril Fatface", cursive;
 }
 .event_meta {
   font-size: 0.8rem;
@@ -512,10 +519,10 @@ main {
 }
 
 .event_description {
-  font-size: 0.6 rem;
+  font-size: 0.85rem;
   color: #666;
-  line-height: 1.2;
-  margin-bottom: 0.9rem;
+  line-height: 1.4;
+  margin-bottom: 1rem;
   flex-grow: 1;
 }
 .full_text {
@@ -753,12 +760,7 @@ main {
     width: 200px;
   }
 }
-@media (max-width: 1024px) {
-  .event_grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-@media (max-width: 600px) {
+@media (max-width: 480px) {
   .event_grid {
     grid-template-columns: 1fr;
   }

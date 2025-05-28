@@ -56,7 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 ?>
 
 <?php include __DIR__ . '/../Includes/header_admin.php'; ?>
-
+<title>Admin | Edit Event</title>
 <main>
     <h1 class="section_title">Edit Event</h1>
 

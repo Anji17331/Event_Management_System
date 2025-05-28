@@ -56,7 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <head>
     <meta charset="UTF-8">
-    <title>Admin Registration</title>
+    <title>Admin | Registration</title>
     <link rel="stylesheet" href="../vje.css">
 </head>
 

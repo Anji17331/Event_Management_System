@@ -9,7 +9,7 @@ $pastEvents = $stmt->fetchAll();
 ?>
 
 <?php include __DIR__ . '/../Includes/header_admin.php'; ?>
-
+<title>Admin | History</title>
 <main>
     <h1 class="section_title">Past Events</h1>
 

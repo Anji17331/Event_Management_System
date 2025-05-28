@@ -1,49 +1,86 @@
 <?php
+// Start session and ensure user is an admin before proceeding
 require_once __DIR__ . '/session.php';
 requireAdmin();
 
-require_once __DIR__ . '/config.php'; // Correct path if this file is in Includes/
+// Include database configuration (PDO) for data queries
+require_once __DIR__ . '/config.php';
+
+// Fetch current admin's ID from session
 $admin_id = getAdminId();
+
+// Prepare and execute a secure query to retrieve admin name & email
 $stmt = $pdo->prepare("SELECT name, email FROM admins WHERE id = ?");
 $stmt->execute([$admin_id]);
+// Fetch associative array of admin details
 $admin = $stmt->fetch(PDO::FETCH_ASSOC);
 ?>
 
+<!-- Link to global stylesheet for consistent styling -->
 <link rel="stylesheet" href="/vje.css">
 
+<!-- Sticky header wrapper holds navigation & profile controls -->
 <div class="sticky_header">
     <header>
+        <!-- Brand logo/title on the left -->
         <div class="logo">Chronos Admin</div>
 
-        <!-- Search Box -->
+        <!-- Centered global search box for quick lookups -->
         <div class="search_container">
-            <input class="search_input" type="text" placeholder="Search" id="global_search_input">
+            <input
+                class="search_input"
+                type="text"
+                placeholder="Search"
+                id="global_search_input">
         </div>
 
-        <!-- Profile Dropdown -->
+        <!-- Profile dropdown trigger and menu -->
         <div class="user_actions">
             <div class="profile_wrapper">
-                <span class="profile_label">Profile</span>
+                <!-- Profile icon that toggles the dropdown -->
                 <img
                     src="/Icons/account_circle_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.svg"
-                    alt="Profile"
+                    alt="Profile Icon"
                     class="profile_icon"
                     id="profileToggle"
                     title="Profile" />
+                <!-- Decorative label next to the icon -->
+                <span class="profile_label">Profile</span>
 
+                <!-- Hidden card that appears when icon is clicked -->
                 <div class="profile_card" id="profileCard">
+                    <!-- Form to update admin's own profile details -->
                     <form id="profileForm" method="POST" action="/admin/update_profile.php">
                         <h3>Admin Profile</h3>
 
-                        <label>Name</label>
-                        <input type="text" name="name" value="<?= htmlspecialchars($admin['name'] ?? '') ?>" required>
+                        <!-- Admin name input, prefilled with current value -->
+                        <label for="nameInput">Name</label>
+                        <input
+                            id="nameInput"
+                            type="text"
+                            name="name"
+                            value="<?= htmlspecialchars($admin['name'] ?? '') ?>"
+                            required>
 
-                        <label>Email</label>
-                        <input type="email" name="email" value="<?= htmlspecialchars($admin['email'] ?? '') ?>" required>
+                        <!-- Admin email input, prefilled with current value -->
+                        <label for="emailInput">Email</label>
+                        <input
+                            id="emailInput"
+                            type="email"
+                            name="email"
+                            value="<?= htmlspecialchars($admin['email'] ?? '') ?>"
+                            required>
 
+                        <!-- Save and Logout actions side by side -->
                         <div class="profile_buttons">
-                            <button class="login_button" type="submit">Save</button>
-                            <a href="/admin/logout.php" class="login_button">Logout</a>
+                            <!-- Submit form to save changes -->
+                            <button type="submit" class="profile_btn profile_btn--save">
+                                Save
+                            </button>
+                            <!-- Logout link to end admin session -->
+                            <a href="/admin/logout.php" class="profile_btn profile_btn--logout">
+                                Logout
+                            </a>
                         </div>
                     </form>
                 </div>
@@ -51,6 +88,7 @@ $admin = $stmt->fetch(PDO::FETCH_ASSOC);
         </div>
     </header>
 
+    <!-- Main admin navigation links -->
     <nav>
         <a href="/admin/dashboard.php">Dashboard</a>
         <a href="/admin/history.php">History</a>
@@ -58,5 +96,5 @@ $admin = $stmt->fetch(PDO::FETCH_ASSOC);
     </nav>
 </div>
 
-<script src="../js/dashboard.js">
-</script>
+<!-- JavaScript to handle profile dropdown toggle and search behaviors -->
+<script src="../js/dashboard.js"></script>
