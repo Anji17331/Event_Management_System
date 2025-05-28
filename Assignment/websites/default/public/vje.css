@@ -312,6 +312,13 @@ header {
   transition: border 0.2s ease, outline 0.2s ease;
 }
 
+#global_search_input {
+  width: 600px;
+  padding: 6px;
+  font-size: 0.95rem;
+  border-radius: 4px;
+}
+
 .search_input:focus {
   border-bottom: 2px solid #5b5fc7;
   border-radius: 4px 4px 2px 2px;
@@ -333,6 +340,78 @@ header {
   font-size: 18px;
   margin-top: 5px;
   text-decoration: none;
+}
+
+/*profile styling */
+
+.profile_wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.profile_icon {
+  width: 50px;
+  height: 36px;
+  cursor: pointer;
+}
+
+.profile_card {
+  display: none;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  padding: 15px;
+  min-width: 300px;
+  z-index: 1000;
+}
+
+.profile_card h3 {
+  margin: 0 0 10px;
+  font-size: 18px;
+}
+
+.profile_card label {
+  display: block;
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+.profile_card input {
+  width: 100%;
+  padding: 6px 8px;
+  margin-top: 4px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.profile_buttons {
+  margin-top: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.profile_buttons button {
+  background-color: #4b0082;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.logout_btn {
+  background-color: #999;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-size: 0.9rem;
 }
 
 .login_button {

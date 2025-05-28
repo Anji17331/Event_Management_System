@@ -19,7 +19,3 @@
         </div>
     </div>
 </footer>
-<!-- <a href="#" class="help_button">
-    <span class="question_mark">?</span>
-    <span class="help_text">Help</span>
-</a> -->

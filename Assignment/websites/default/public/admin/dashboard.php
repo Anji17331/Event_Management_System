@@ -34,7 +34,7 @@ $events = $stmt->fetchAll();
                         <th>Actions</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="event_table_body">
                     <?php foreach ($events as $ev): ?>
                         <tr>
                             <td><?= htmlspecialchars($ev['title']) ?></td>
@@ -46,9 +46,14 @@ $events = $stmt->fetchAll();
                         </tr>
                     <?php endforeach; ?>
                 </tbody>
+
             </table>
         </div>
     <?php endif; ?>
 </main>
+<script>
+
+</script>
+
 
 <?php include __DIR__ . '/../Includes/footer.php'; ?>
